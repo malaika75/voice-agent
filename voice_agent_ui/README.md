@@ -1,36 +1,93 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
-## Getting Started
+# 🎨 Voice Agent Frontend (Next.js)
 
-First, run the development server:
+This is the **frontend application** of the Voice Agent project.  
+It provides a simple UI to interact with the backend, send text, and play AI-generated voice responses.
+
+---
+
+## ✨ Features
+
+- Built with [Next.js](https://nextjs.org) (App Router)  
+- UI components with **Tailwind CSS**  
+- Icons via **Lucide React**  
+- Animations with **Framer Motion**  
+- Sends requests to backend `/ask` endpoint  
+- Plays audio responses from backend  
+
+---
+
+## 🛠️ Tech Stack
+
+- [Next.js](https://nextjs.org) – React framework  
+- [Tailwind CSS](https://tailwindcss.com) – Styling  
+- [Lucide React](https://lucide.dev) – Icons  
+- [Framer Motion](https://www.framer.com/motion/) – Animations  
+
+---
+
+## 🚀 Getting Started
+
+### 1. Clone the repo
+
+```bash
+git clone <repo-url>
+cd frontend
+````
+
+### 2. Install dependencies
+
+Make sure you have **Node.js 18+** installed.
+Then install packages:
+
+```bash
+npm install
+```
+
+### 3. Configure Backend API
+
+Update the API base URL inside your frontend code (e.g. in `utils/api.ts` or directly in your component) to point to the backend:
+
+```ts
+const API_URL = "http://localhost:8000"; 
+// or replace with your deployed backend link
+```
+
+### 4. Run locally
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Frontend will run at:
+👉 [http://localhost:3000](http://localhost:3000)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 📦 Deployment (Vercel)
 
-## Learn More
+1. Push the frontend folder to GitHub.
+2. Go to [Vercel](https://vercel.com) and import your repo.
+3. Set **Environment Variables** if needed (e.g. backend URL).
+4. Click **Deploy**.
 
-To learn more about Next.js, take a look at the following resources:
+Now your frontend is live ✅
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+---
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 🔗 Connecting Frontend & Backend
 
-## Deploy on Vercel
+* Backend runs on **Koyeb / Render / Fly.io** at something like:
+  `https://your-backend-service.koyeb.app`
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+* Frontend (on Vercel) should call that URL instead of localhost.
+  Example:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```ts
+const API_URL = "https://your-backend-service.koyeb.app";
+```
+
+This way, one click on the frontend link will connect to your backend and the full project will work end-to-end 🎉
+
+```
+

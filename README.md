@@ -1,67 +1,100 @@
 
-## 💼 Career Agent AI
+# 🎙️ Voice Agent Backend (FastAPI)
 
-This is a smart career agent built with **Streamlit** and powered by **Gemini AI**. It helps users find **real-time job or freelance opportunities** based on their skills, role, and location — and sends those opportunities directly to their **email**.
-
----
-
-### 🚀 Features
-
-* AI-based job/freelance opportunity finder (Gemini 2.5 Flash)
-* Real-time web search using browser tool
-* Results sent to user’s email using Gmail SMTP
-* Clean, simple UI using Streamlit
+This is the **backend service** of the Voice Agent project.  
+It powers the AI logic, generates text/audio, and serves responses to the frontend.
 
 ---
 
-### 📋 How to Use
+## ✨ Features
 
-1. Run the app:
+- AI agent (Gemini via `openai-agents`)
+- Text-to-Speech with Edge TTS
+- REST API endpoint (`/ask`) for frontend
+- Serves generated audio files via static route
+
+---
+
+## 🛠️ Tech Stack
+
+- [FastAPI](https://fastapi.tiangolo.com/) – Web framework  
+- [Uvicorn](https://www.uvicorn.org/) – ASGI server  
+- [openai-agents](https://pypi.org/project/openai-agents/) – AI agent framework  
+- [edge-tts](https://github.com/rany2/edge-tts) – Microsoft TTS  
+- [python-dotenv](https://pypi.org/project/python-dotenv/) – Environment variables  
+- [uv](https://docs.astral.sh/uv/) – Dependency & environment manager  
+
+---
+
+## 🚀 Getting Started
+
+### 1. Clone the repo
+
+```bash
+git clone <repo-url>
+cd backend
+````
+
+### 2. Initialize project with uv
+
+Make sure **uv** is installed globally.
+If not, install first:
+
+```bash
+pip install uv
+```
+
+Initialize the project:
+
+```bash
+uv init
+```
+
+This will create a `pyproject.toml` file.
+
+### 3. Add dependencies
+
+```bash
+uv add fastapi uvicorn openai-agents edge-tts python-dotenv
+```
+
+Now your dependencies are stored in `pyproject.toml`.
+
+### 4. Environment variables
+
+Create a `.env` file in the backend folder:
+
+```env
+GEMINI_API_KEY=your_api_key_here
+```
+
+### 5. Run locally
+
+```bash
+uv run uvicorn main:app --reload
+```
+
+Backend will run at:
+👉 [http://localhost:8000](http://localhost:8000)
+
+---
+
+## 📦 Deployment (Koyeb / Render / Fly.io)
+
+1. Push this folder to GitHub.
+
+2. On your cloud platform, select this repo.
+
+3. Set the **Start Command**:
 
    ```bash
-   streamlit run main.py
+   uv run uvicorn main:app --host 0.0.0.0 --port 8000
    ```
 
-2. Fill the form with:
-
-   * Name
-   * Email
-   * Skills
-   * Preferred role & location...
-
-3. AI will search live opportunities based on your info.
-
-4. You’ll get an email with all the opportunities found.
-
----
-
-### 🔐 Setup
-
-1. Create a `.env` file:
+4. Add environment variable:
 
    ```env
-   GEMINI_API_KEY=your_gemini_api_key
-   SMTP_EMAIL=your_email@gmail.com
-   SMTP_PASSWORD=your_gmail_app_password
+   GEMINI_API_KEY=your_api_key_here
    ```
 
-2. Install dependencies:
-
-uv init career-agent       # ✅ Creates a new project folder with pyproject.toml
-cd career-agent            # ✅ Move into the project directory
-uv add openai-agents python-dotenv  # ✅ Install dependencies & update pyproject.toml
-uv add streamlit #for UI
-
-
-3. Make sure **2-step verification** is enabled on your Gmail, and generate an **App Password** to use as `SMTP_PASSWORD`.
-
----
-
-### 🛠️ Tech Stack
-
-* Streamlit
-* Gemini 2.5 Flash
-* Python SMTP
-* OpenAI SDK (with external Gemini client)
-
----
+✅ Now your backend API is live!
