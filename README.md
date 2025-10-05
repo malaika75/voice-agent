@@ -1,3 +1,14 @@
+---
+title: Voice Agent
+emoji: 🎙️
+colorFrom: blue
+colorTo: pink
+sdk: docker
+sdk_version: "1.0.0"
+app_file: main.py
+pinned: false
+---
+
 
 # 🎙️ Voice Agent Backend (FastAPI)
 
