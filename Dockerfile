@@ -3,14 +3,14 @@
 # =======================
 FROM node:18-alpine AS frontend-builder
 
-WORKDIR /app/frontend
+WORKDIR /app/voice-agent-ui
 
 # install frontend dependencies
-COPY frontend/package*.json ./
+COPY voice-agent-ui/package*.json ./ 
 RUN npm install
 
 # build frontend
-COPY frontend ./
+COPY voice-agent-ui ./ 
 RUN npm run build
 
 # =======================
@@ -23,23 +23,22 @@ RUN pip install uv
 
 WORKDIR /app
 
-# copy backend project
-COPY backend/ ./backend
+# copy backend (Python files in root)
+COPY pyproject.toml ./
+COPY main.py ./
+COPY requirements.txt ./
 
-# install backend dependencies with uv
-WORKDIR /app/backend
-COPY backend/pyproject.toml ./
-RUN uv pip install . --system
+# install dependencies (choose whichever exists)
+RUN if [ -f pyproject.toml ]; then uv pip install . --system; \
+    elif [ -f requirements.txt ]; then pip install -r requirements.txt; fi
 
-# copy frontend build into backend folder (optional serving)
-WORKDIR /app
-COPY --from=frontend-builder /app/frontend/.next ./frontend/.next
-COPY --from=frontend-builder /app/frontend/public ./frontend/public
+# copy frontend build from Stage 1
+COPY --from=frontend-builder /app/voice-agent-ui/.next ./voice-agent-ui/.next
+COPY --from=frontend-builder /app/voice-agent-ui/public ./voice-agent-ui/public
 
 # expose ports
 EXPOSE 8000
 EXPOSE 3000
 
 # run backend
-WORKDIR /app/backend
 CMD ["python", "main.py"]
