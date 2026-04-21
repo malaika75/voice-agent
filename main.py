@@ -10,7 +10,7 @@ import os , re
 from uuid import uuid4
 
 load_dotenv()
-api_key = os.getenv("GEMINI_API_KEY")
+api_key = os.getenv("GROQ_API_KEY")
 
 app = FastAPI()
 
@@ -29,8 +29,8 @@ os.makedirs(AUDIO_DIR, exist_ok=True)
 app.mount("/audio", StaticFiles(directory=AUDIO_DIR), name="audio")
 
 # your agent client
-client = AsyncOpenAI(api_key=api_key, base_url="https://generativelanguage.googleapis.com/v1beta/openai/")
-model = OpenAIChatCompletionsModel(model="gemini-2.5-flash", openai_client=client)
+client = AsyncOpenAI(api_key=api_key, base_url="https://api.groq.com/openai/v1")
+model = OpenAIChatCompletionsModel(model="llama-3.3-70b-versatile", openai_client=client)
 
 agent = Agent(
     name="voice agent",

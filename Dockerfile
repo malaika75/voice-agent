@@ -1,44 +1,19 @@
-# =======================
-# Stage 1: Build Frontend
-# =======================
-FROM node:18-alpine AS frontend-builder
+# Read the doc: https://huggingface.co/docs/hub/spaces-sdks-docker
+# you will also find guides on how best to write your Dockerfile
 
-WORKDIR /app/voice-agent-ui
+FROM python:3.12-slim
 
-# install frontend dependencies
-COPY voice-agent-ui/package*.json ./ 
-RUN npm install
-
-# build frontend
-COPY voice-agent-ui ./ 
-RUN npm run build
-
-# =======================
-# Stage 2: Backend + Frontend
-# =======================
-FROM python:3.11-slim
-
-# install uv (for pyproject.toml deps)
-RUN pip install uv
+RUN useradd -m -u 1000 user
+USER user
+ENV PATH="/home/user/.local/bin:$PATH"
 
 WORKDIR /app
 
-# copy backend (Python files in root)
-COPY pyproject.toml ./
-COPY main.py ./
-COPY requirements.txt ./
+RUN pip install --no-cache-dir uv
 
-# install dependencies (choose whichever exists)
-RUN if [ -f pyproject.toml ]; then uv pip install . --system; \
-    elif [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+COPY --chown=user ./pyproject.toml .
+COPY --chown=user ./main.py .
 
-# copy frontend build from Stage 1
-COPY --from=frontend-builder /app/voice-agent-ui/.next ./voice-agent-ui/.next
-COPY --from=frontend-builder /app/voice-agent-ui/public ./voice-agent-ui/public
+RUN uv pip install . --system
 
-# expose ports
-EXPOSE 8000
-EXPOSE 3000
-
-# run backend
-CMD ["python", "main.py"]
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "7860"]
