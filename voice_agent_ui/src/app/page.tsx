@@ -60,6 +60,8 @@ export default function VoiceChat() {
 
   // send the transcribed text to backend and handle response
   const handleUserText = async (userText: string) => {
+    const API_URL = "https://malaika909-voice-ai.hf.space";
+
     // show user's message
     setConversation(prev => [...prev, { sender: "You", text: userText }]);
 
@@ -67,7 +69,7 @@ export default function VoiceChat() {
     setConversation(prev => [...prev, { sender: "AI", text: "Thinking...", type: "info" }]);
 
     try {
-      const res = await fetch("http://localhost:8000/ask", {
+      const res = await fetch(`${API_URL}/ask`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ text: userText }),
@@ -92,7 +94,7 @@ export default function VoiceChat() {
 
       // play audio if available
       if (data.audio_url) {
-        const audio = new Audio(`http://localhost:8000${data.audio_url.startsWith("/") ? data.audio_url : "/" + data.audio_url}`);
+        const audio = new Audio(`${API_URL}${data.audio_url.startsWith("/") ? data.audio_url : "/" + data.audio_url}`);
         audio.play().catch(e => {
           console.error("Audio play failed", e);
           setConversation(prev => [...prev, { sender: "System", text: "Audio playback failed", type: "error" }]);

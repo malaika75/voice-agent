@@ -2,7 +2,6 @@
 name = "voice-agent"
 version = "0.1.0"
 description = "Voice AI assistant using Groq LLaMA"
-readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
     "openai-agents>=0.2.1",
@@ -12,6 +11,14 @@ dependencies = [
     "pyttsx3",
     "playsound==1.2.2",
     "fastapi>=0.112.0",
-    "uvicorn>=0.30.0"
-
+    "uvicorn>=0.30.0",
+    "groq>=0.4.0"  # ✅ Agar Groq API directly use kar rahe hain to add karein
 ]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+# ✅ ADD THIS: Tell hatchling to include all files in root
+[tool.hatch.build.targets.wheel]
+packages = ["."]
